@@ -87,7 +87,7 @@ public class Login extends javax.swing.JFrame {
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
         
         try {
-            File file = new File("src\\assignment1\\DATA\\user.txt");
+            File file = new File("src\\assignment1\\DATA\\Admin.txt");
             
             if (!file.exists()) {
                 file.createNewFile();
@@ -95,6 +95,7 @@ public class Login extends javax.swing.JFrame {
             
             try (FileWriter writer = new FileWriter(file, false)) {
                 writer.write("Admin_staff\n");
+                Session.role = "Admin_staff";
             }
             
             Login2 next = new Login2();
