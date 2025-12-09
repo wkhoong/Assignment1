@@ -9,8 +9,7 @@ public class Login extends javax.swing.JFrame {
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(Login.class.getName());
     public Login() {
         initComponents();
-        
-        
+        Utils.defaultSettings(this);
     }
 
     @SuppressWarnings("unchecked")
@@ -26,20 +25,24 @@ public class Login extends javax.swing.JFrame {
         jButton1 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setLocation(new java.awt.Point(0, 0));
         setResizable(false);
 
         jLabel1.setText("Welcome Back");
 
         jButton2.setText("Academic Leader");
+        jButton2.addActionListener(this::jButton2ActionPerformed);
 
         jButton3.setText("Lecturer");
+        jButton3.addActionListener(this::jButton3ActionPerformed);
 
         jButton4.setText("Student");
+        jButton4.addActionListener(this::jButton4ActionPerformed);
 
         jButton5.setText("Admin Staff");
         jButton5.addActionListener(this::jButton5ActionPerformed);
 
-        jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/assignment1/apu logo 5.png"))); // NOI18N
+        jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/assignment1/Image/apu logo 5.png"))); // NOI18N
         jLabel3.setText("jLabel3");
 
         jButton1.setText("Register");
@@ -102,10 +105,7 @@ public class Login extends javax.swing.JFrame {
                 file.createNewFile();
             }
             
-            try (FileWriter writer = new FileWriter(file, false)) {
-                writer.write("Admin_staff\n");
-                Session.role = "Admin_staff";
-            }
+            Session.role = "Admin_staff";
             
             Login2 next = new Login2();
             next.setVisible(true);
@@ -121,6 +121,64 @@ public class Login extends javax.swing.JFrame {
         reg.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        try {
+            File file = new File("src\\assignment1\\DATA\\Leader.txt");
+            
+            if (!file.exists()) {
+                file.createNewFile();
+            }
+            
+            Session.role = "Leader";
+            
+            Login2 next = new Login2();
+            next.setVisible(true);
+            this.dispose();
+            
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        
+    }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        try {
+            File file = new File("src\\assignment1\\DATA\\Lecturer.txt");
+            
+            if (!file.exists()) {
+                file.createNewFile();
+            }
+            
+            Session.role = "Lecturer";
+            
+            Login2 next = new Login2();
+            next.setVisible(true);
+            this.dispose();
+            
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }//GEN-LAST:event_jButton3ActionPerformed
+
+    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+        try {
+            File file = new File("src\\assignment1\\DATA\\Student.txt");
+            
+            if (!file.exists()) {
+                file.createNewFile();
+            }
+            
+            Session.role = "Student";
+            
+            Login2 next = new Login2();
+            next.setVisible(true);
+            this.dispose();
+            
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }//GEN-LAST:event_jButton4ActionPerformed
 
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(() -> new Login().setVisible(true));
