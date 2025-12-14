@@ -203,6 +203,7 @@ public class Login2 extends javax.swing.JFrame {
                         passwordCorrect = true;
                         matchedRole = role;
                         matchedName = name;
+                        Session.id = id;
                     }
                     
                     break;
@@ -229,6 +230,7 @@ public class Login2 extends javax.swing.JFrame {
             jLabel7.setText("Invalid");
             return;
         }
+        
         
         Dashboard db = new Dashboard();
         db.setVisible(true);

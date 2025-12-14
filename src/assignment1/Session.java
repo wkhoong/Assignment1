@@ -2,6 +2,7 @@ package assignment1;
 
 public class Session {
     public static String role = "";
+    public static String id = "";
     public static String filePath = "";
     
     public static void setRole(String selectedRole) {
