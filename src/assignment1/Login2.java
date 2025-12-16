@@ -12,12 +12,6 @@ public class Login2 extends javax.swing.JFrame {
         
         jLabel6.setText("");
         jLabel7.setText("");
-        
-        jButton3.setEnabled(false);
-        
-        if (!Session.role.equals("Admin_staff")) {
-            jButton3.setEnabled(true);
-        }
     }
 
     @SuppressWarnings("unchecked")
@@ -33,7 +27,6 @@ public class Login2 extends javax.swing.JFrame {
         String r = Session.role;
         jLabel6 = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
-        jButton3 = new javax.swing.JButton();
         jTextField1 = new javax.swing.JTextField();
         jTextField2 = new javax.swing.JTextField();
         jLabel8 = new javax.swing.JLabel();
@@ -67,10 +60,6 @@ public class Login2 extends javax.swing.JFrame {
 
         jLabel7.setFont(new java.awt.Font("Copperplate Gothic Bold", 0, 12)); // NOI18N
         jLabel7.setText("jLabel7");
-
-        jButton3.setFont(new java.awt.Font("Copperplate Gothic Bold", 0, 12)); // NOI18N
-        jButton3.setText("Register");
-        jButton3.addActionListener(this::jButton3ActionPerformed);
 
         jLabel8.setFont(new java.awt.Font("Copperplate Gothic Bold", 1, 24)); // NOI18N
         jLabel8.setText("Welcome Back");
@@ -107,15 +96,10 @@ public class Login2 extends javax.swing.JFrame {
                                         .addGap(0, 0, Short.MAX_VALUE)))))
                         .addGap(52, 52, 52))
                     .addGroup(layout.createSequentialGroup()
+                        .addGap(101, 101, 101)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(101, 101, 101)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 209, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jLabel8)))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(160, 160, 160)
-                                .addComponent(jButton3)))
+                            .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 209, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel8))
                         .addContainerGap())))
         );
         layout.setVerticalGroup(
@@ -144,8 +128,6 @@ public class Login2 extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton1)
                     .addComponent(jButton2))
-                .addGap(18, 18, 18)
-                .addComponent(jButton3)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -239,12 +221,6 @@ public class Login2 extends javax.swing.JFrame {
         
     }//GEN-LAST:event_jButton2ActionPerformed
 
-    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        Register reg = new Register();
-        reg.setVisible(true);
-        this.dispose();
-    }//GEN-LAST:event_jButton3ActionPerformed
-
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         Login login = new Login();
         login.setVisible(true);
@@ -258,7 +234,6 @@ public class Login2 extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;

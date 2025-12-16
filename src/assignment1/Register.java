@@ -274,9 +274,9 @@ public class Register extends javax.swing.JFrame {
         
         if (!valid) return;
         
-        String role = Session.role;
+//        String role = Session.role;
         
-        Utils.saveUser(role, name, ID, password);
+//        Utils.saveUser(role, name, ID, password);
         
         Login2 login = new Login2();
         login.setVisible(true);
