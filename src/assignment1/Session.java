@@ -8,6 +8,9 @@ public class Session {
     public static void setRole(String selectedRole) {
         role = selectedRole;
         switch (role) {
+            case "Admin_staff":
+                filePath = "src\\assignment1\\DATA\\Admin.txt";
+                break;
             case "Student":
                 filePath = "src\\assignment1\\DATA\\Student.txt";
                 break;
