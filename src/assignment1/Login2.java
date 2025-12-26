@@ -171,7 +171,7 @@ public class Login2 extends javax.swing.JFrame {
             
             while ((line = br.readLine()) != null) {
                 String[] parts = line.split("\\|");
-                if (parts.length != 4) continue;
+                if (parts.length != 5) continue;
                 
                 role = parts[0];
                 String name = parts[1];

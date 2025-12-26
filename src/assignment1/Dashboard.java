@@ -9,6 +9,8 @@ public class Dashboard extends javax.swing.JFrame {
     
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(Dashboard.class.getName());
 
+    JTable[] tables;
+    
     public Dashboard() {
         initComponents();
         Utils.defaultSettings(this);
@@ -154,16 +156,28 @@ public class Dashboard extends javax.swing.JFrame {
 
         jTable3.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null}
             },
             new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
+                "Name", "ID", "Role", "", ""
             }
-        ));
+        ) {
+            boolean[] canEdit = new boolean [] {
+                true, true, true, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
         jScrollPane3.setViewportView(jTable3);
+        if (jTable3.getColumnModel().getColumnCount() > 0) {
+            jTable3.getColumnModel().getColumn(3).setResizable(false);
+            jTable3.getColumnModel().getColumn(4).setResizable(false);
+        }
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -234,18 +248,27 @@ public class Dashboard extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jTabbedPane1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTabbedPane1MouseClicked
+        
+        
+        String[] filePaths = {
+            "src/assignment1/DATA/Student.txt",
+            "src/assignment1/DATA/Lecturer.txt",
+            "src/assignment1/DATA/Admin.txt"
+        };
+        
+        
         DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
         model.setRowCount(0);
-        
-        File file = new File("src/assignment1/DATA/Student.txt");
+
+        File file = new File(filePaths[1]);
         if (!file.exists()) return;
-        
+
         try (BufferedReader br = new BufferedReader(new FileReader(file))) {
             String line;
             while ((line = br.readLine()) != null) {
                 String[] parts = line.split("\\|");
                 if (parts.length != 5) continue;
-                
+
                 model.addRow(new Object[]{
                     parts[1], 
                     parts[2],
@@ -257,11 +280,42 @@ public class Dashboard extends javax.swing.JFrame {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        
+
         TableColumn passwordCol = jTable1.getColumnModel().getColumn(4);
         passwordCol.setMinWidth(0);
         passwordCol.setMaxWidth(0);
         passwordCol.setPreferredWidth(0);
+        
+        //load Admin table
+        model = (DefaultTableModel) jTable3.getModel();
+        model.setRowCount(0);
+
+        file = new File(filePaths[2]);
+        if (!file.exists()) return;
+
+        try (BufferedReader br = new BufferedReader(new FileReader(file))) {
+            String line;
+            while ((line = br.readLine()) != null) {
+                String[] parts = line.split("\\|");
+                if (parts.length != 5) continue;
+
+                model.addRow(new Object[]{
+                    parts[1], 
+                    parts[2],
+                    parts[0],
+                    parts[4],
+                    parts[3]
+                });
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        passwordCol = jTable3.getColumnModel().getColumn(4);
+        passwordCol.setMinWidth(0);
+        passwordCol.setMaxWidth(0);
+        passwordCol.setPreferredWidth(0);
+        
     }//GEN-LAST:event_jTabbedPane1MouseClicked
 
     private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
@@ -270,8 +324,6 @@ public class Dashboard extends javax.swing.JFrame {
         int pathInd = 0;
         
         System.out.println(index);
-        
-        JTable[] tables;
         
         tables = new JTable[]{
             jTable1,

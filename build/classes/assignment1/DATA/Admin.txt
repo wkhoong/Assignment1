@@ -1,2 +1,2 @@
-Admin_staff|Ali|076234|11111111
-Admin_staff|Bali|0123456|22222222
+Admin_staff|Ali|076234|11111111|Male
+Admin_staff|Bali|123456|22222222|Female
