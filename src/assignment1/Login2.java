@@ -214,7 +214,7 @@ public class Login2 extends javax.swing.JFrame {
         }
         
         
-        Dashboard db = new Dashboard();
+        AdminDashboard db = new AdminDashboard();
         db.setVisible(true);
         this.dispose();
             

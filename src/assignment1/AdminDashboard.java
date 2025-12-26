@@ -5,52 +5,63 @@ import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
 
-public class Dashboard extends javax.swing.JFrame {
+public class AdminDashboard extends javax.swing.JFrame {
     
-    private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(Dashboard.class.getName());
+    private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(AdminDashboard.class.getName());
 
     JTable[] tables;
     
-    public Dashboard() {
+    public AdminDashboard() {
         initComponents();
         Utils.defaultSettings(this);
         
         jButton1.setEnabled(false);
+        jButton6.setEnabled(false);
         
-        DefaultTableModel model = (DefaultTableModel) jTable2.getModel();
+        tables = new JTable[]{
+            jTable1,
+            jTable2,
+            jTable3
+        };
         
-        File file = new File("src/assignment1/DATA/Lecturer.txt");
+        String[] filePaths = {
+            "src/assignment1/DATA/Student.txt",
+            "src/assignment1/DATA/Lecturer.txt",
+            "src/assignment1/DATA/Admin.txt"
+        };
         
-        if (!file.exists()) {
-            return;
-        }
-        
-        try (BufferedReader br = new BufferedReader(new FileReader(file))) {
-            String line;
-            
-            while ((line = br.readLine()) != null) {
-                String[] parts = line.split("\\|");
-                
-                if (parts.length != 5) continue;
-                
-                Object[] row = {
-                    parts[1],
-                    parts[2],
-                    parts[0],
-                    parts[4],
-                    parts[3]
-                };
-                
-                model.addRow(row);
+        for (int i = 0; i<tables.length; i++) {
+            DefaultTableModel model = (DefaultTableModel) tables[i].getModel();
+            model.setRowCount(0);
+
+            File file = new File(filePaths[i]);
+            if (!file.exists()) return;
+
+            try (BufferedReader br = new BufferedReader(new FileReader(file))) {
+                String line;
+                while ((line = br.readLine()) != null) {
+                    String[] parts = line.split("\\|");
+                    if (parts.length != 5) continue;
+
+                    model.addRow(new Object[]{
+                        parts[1], 
+                        parts[2],
+                        parts[0],
+                        parts[4],
+                        parts[3]
+                    });
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
             }
-        } catch (Exception e) {
-            e.printStackTrace();
+
+            TableColumn passwordCol = tables[i].getColumnModel().getColumn(4);
+            passwordCol.setMinWidth(0);
+            passwordCol.setMaxWidth(0);
+            passwordCol.setPreferredWidth(0);
         }
         
-        TableColumn passwordCol = jTable2.getColumnModel().getColumn(4);
-        passwordCol.setMinWidth(0);
-        passwordCol.setMaxWidth(0);
-        passwordCol.setPreferredWidth(0);
+        
     }
     
     @SuppressWarnings("unchecked")
@@ -248,74 +259,34 @@ public class Dashboard extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jTabbedPane1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTabbedPane1MouseClicked
+        int index = jTabbedPane1.getSelectedIndex();
+        String path = "";
+        int pathInd = 0;
         
+//        System.out.println(index);
         
-        String[] filePaths = {
-            "src/assignment1/DATA/Student.txt",
-            "src/assignment1/DATA/Lecturer.txt",
-            "src/assignment1/DATA/Admin.txt"
+        tables = new JTable[]{
+            jTable1,
+            jTable2,
+            jTable3
         };
         
-        
-        DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
-        model.setRowCount(0);
-
-        File file = new File(filePaths[1]);
-        if (!file.exists()) return;
-
-        try (BufferedReader br = new BufferedReader(new FileReader(file))) {
-            String line;
-            while ((line = br.readLine()) != null) {
-                String[] parts = line.split("\\|");
-                if (parts.length != 5) continue;
-
-                model.addRow(new Object[]{
-                    parts[1], 
-                    parts[2],
-                    parts[0],
-                    parts[4],
-                    parts[3]
-                });
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
+        if (index == 0) {
+            path = "src\\assignment1\\DATA\\Lecturer.txt";
+            pathInd = 1;
+        } else if (index == 1) {
+            path = "src\\assignment1\\DATA\\Student.txt";
+            pathInd = 0;
+        } else if (index == 2) {
+            path = "src\\assignment1\\DATA\\Admin.txt";
+            pathInd = 2;
         }
-
-        TableColumn passwordCol = jTable1.getColumnModel().getColumn(4);
-        passwordCol.setMinWidth(0);
-        passwordCol.setMaxWidth(0);
-        passwordCol.setPreferredWidth(0);
         
-        //load Admin table
-        model = (DefaultTableModel) jTable3.getModel();
-        model.setRowCount(0);
-
-        file = new File(filePaths[2]);
-        if (!file.exists()) return;
-
-        try (BufferedReader br = new BufferedReader(new FileReader(file))) {
-            String line;
-            while ((line = br.readLine()) != null) {
-                String[] parts = line.split("\\|");
-                if (parts.length != 5) continue;
-
-                model.addRow(new Object[]{
-                    parts[1], 
-                    parts[2],
-                    parts[0],
-                    parts[4],
-                    parts[3]
-                });
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        passwordCol = jTable3.getColumnModel().getColumn(4);
-        passwordCol.setMinWidth(0);
-        passwordCol.setMaxWidth(0);
-        passwordCol.setPreferredWidth(0);
+        DefaultTableModel model = (DefaultTableModel) tables[pathInd].getModel();
         
+        model.addTableModelListener(e -> {
+            jButton6.setEnabled(true);
+        });
     }//GEN-LAST:event_jTabbedPane1MouseClicked
 
     private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
@@ -342,7 +313,7 @@ public class Dashboard extends javax.swing.JFrame {
             pathInd = 2;
         }
         
-        System.out.println(path);
+//        System.out.println(path);
 
         DefaultTableModel model = (DefaultTableModel) tables[pathInd].getModel();
         
@@ -365,10 +336,12 @@ public class Dashboard extends javax.swing.JFrame {
             e.printStackTrace();
         }
         
+        jButton6.setEnabled(false);
+        
     }//GEN-LAST:event_jButton6ActionPerformed
 
     public static void main(String args[]) {
-        java.awt.EventQueue.invokeLater(() -> new Dashboard().setVisible(true));
+        java.awt.EventQueue.invokeLater(() -> new AdminDashboard().setVisible(true));
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
