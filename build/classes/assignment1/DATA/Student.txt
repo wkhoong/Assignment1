@@ -1,1 +1,1 @@
-Student|Bali|123456|22222222
+Student|Fali|123456|22222222|CYS

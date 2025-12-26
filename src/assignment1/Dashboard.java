@@ -1,6 +1,7 @@
 package assignment1;
 
 import java.io.*;
+import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
 
@@ -125,13 +126,13 @@ public class Dashboard extends javax.swing.JFrame {
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null}
             },
             new String [] {
-                "Role", "Name", "ID", ""
+                "Name", "ID", "Role", "Course", ""
             }
         ));
         jScrollPane1.setViewportView(jTable1);
@@ -243,39 +244,56 @@ public class Dashboard extends javax.swing.JFrame {
             String line;
             while ((line = br.readLine()) != null) {
                 String[] parts = line.split("\\|");
-                if (parts.length != 4) continue;
+                if (parts.length != 5) continue;
                 
                 model.addRow(new Object[]{
-                    parts[0], 
-                    parts[1],
+                    parts[1], 
                     parts[2],
+                    parts[0],
+                    parts[4],
+                    parts[3]
                 });
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
         
+        TableColumn passwordCol = jTable1.getColumnModel().getColumn(4);
+        passwordCol.setMinWidth(0);
+        passwordCol.setMaxWidth(0);
+        passwordCol.setPreferredWidth(0);
     }//GEN-LAST:event_jTabbedPane1MouseClicked
 
     private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
         int index = jTabbedPane1.getSelectedIndex();
         String path = "";
+        int pathInd = 0;
         
         System.out.println(index);
         
+        JTable[] tables;
+        
+        tables = new JTable[]{
+            jTable1,
+            jTable2,
+            jTable3
+        };
         
         if (index == 0) {
             path = "src\\assignment1\\DATA\\Lecturer.txt";
+            pathInd = 1;
         } else if (index == 1) {
             path = "src\\assignment1\\DATA\\Student.txt";
+            pathInd = 0;
         } else if (index == 2) {
             path = "src\\assignment1\\DATA\\Admin.txt";
+            pathInd = 2;
         }
         
         System.out.println(path);
-        
-        DefaultTableModel model = (DefaultTableModel) jTable2.getModel();
 
+        DefaultTableModel model = (DefaultTableModel) tables[pathInd].getModel();
+        
         File file = new File(path);
 
         try (PrintWriter pw = new PrintWriter(new FileWriter(file, false))) {
