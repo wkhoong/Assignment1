@@ -96,6 +96,7 @@ public class AdminDashboard extends javax.swing.JFrame {
         jButton1.setText("User Management");
 
         jButton2.setText("Lecture Assignment");
+        jButton2.addActionListener(this::jButton2ActionPerformed);
 
         jButton3.setText("Grding System");
 
@@ -339,6 +340,13 @@ public class AdminDashboard extends javax.swing.JFrame {
         jButton6.setEnabled(false);
         
     }//GEN-LAST:event_jButton6ActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        // TODO add your handling code here:
+        AssignLeader AL = new AssignLeader();
+        AL.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_jButton2ActionPerformed
 
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(() -> new AdminDashboard().setVisible(true));
