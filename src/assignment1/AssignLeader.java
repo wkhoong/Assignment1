@@ -1,8 +1,11 @@
 package assignment1;
 
+import java.awt.List;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
+import java.nio.file.Files;
+import java.util.ArrayList;
 import javax.swing.ButtonModel;
 import javax.swing.JOptionPane;
 import javax.swing.JRadioButton;
@@ -59,6 +62,7 @@ public class AssignLeader extends javax.swing.JFrame {
             e.printStackTrace();
         }
         
+        //leader
         JRadioButton[] leaderButtons = {
             jRadioButton10,
             jRadioButton11,
@@ -146,6 +150,7 @@ public class AssignLeader extends javax.swing.JFrame {
         jLabel1.setText("Admin Panel");
 
         jButton1.setText("User Management");
+        jButton1.addActionListener(this::jButton1ActionPerformed);
 
         jButton2.setText("Lecture Assignment");
 
@@ -372,19 +377,153 @@ public class AssignLeader extends javax.swing.JFrame {
         
         String lecturerLine = selected.getActionCommand();
         
-        String[] parts = lecturerLine.split("\\|");
-        if (parts.length !=5) return;
+        String[] lecturerParts = lecturerLine.split("\\|");
+        if (lecturerParts.length !=5) return;
         
-        String name = parts[1];
-        String id = parts[2];
-        String password = parts[3];
-        String subject = parts[4];
+        String lecName = lecturerParts[1];
+        String id = lecturerParts[2];
+        String password = lecturerParts[3];
+        String lecSubject = lecturerParts[4];
         
-        String newLeaderLine = "AcademicLeader|" + name + "|" + id + "|" + password + "|" + subject;
+        String newLeaderLine = "AcademicLeader|" + lecName + "|" + id + "|" + password + "|" + lecSubject;
         
         File leaderFile = new File("src/assignment1/DATA/Leader.txt");
         
+        ArrayList<String> lines = new ArrayList<>();
+        boolean replaced = false;
+        
+        try {
+            if (leaderFile.exists()) {
+                lines = (ArrayList<String>) Files.readAllLines(leaderFile.toPath());
+            }
+            
+            ArrayList<String> updated = new ArrayList<>();
+            
+            for (String line : lines) {
+                String[] p = line.split("\\|");
+                if (p.length == 5 && p[4].equals(lecSubject)) {
+                    updated.add(newLeaderLine);
+                    replaced = true;
+                } else {
+                    updated.add(line);
+                }
+            }
+            
+            if (!replaced) {
+                updated.add(newLeaderLine);
+            }
+            
+            Files.write(leaderFile.toPath(), updated);
+            
+            JOptionPane.showMessageDialog(this, "Lecturer promoted to Academic Leader for " + lecSubject);
+            
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        
+        //Remove promoted lectarer
+        File file = new File("src/assignment1/DATA/Lecturer.txt");
+        if (!file.exists()) return;
+        
+        try {
+            List<String> promotedLines = Files.readAllLines(file.toPath());
+            promotedLines
+        }
+        
+        //refresh
+        JRadioButton[] lecturerButtons = {
+            jRadioButton1,
+            jRadioButton2,
+            jRadioButton3,
+            jRadioButton4,
+            jRadioButton5,
+            jRadioButton6,
+            jRadioButton7,
+            jRadioButton8,
+            jRadioButton9
+        };
+        
+        for (JRadioButton rb : lecturerButtons) {
+            rb.setVisible(false);
+            rb.setSelected(false);
+            rb.setActionCommand(null);
+        }
+        
+        File file = new File("src/assignment1/DATA/Lecturer.txt");
+        if (!file.exists()) return;
+        
+        int index = 0;
+        
+        try (BufferedReader br = new BufferedReader(new FileReader(file))) {
+            String line;
+            
+            while ((line = br.readLine()) != null && index < lecturerButtons.length) {
+                String[] parts = line.split("\\|");
+                if (parts.length !=5) continue;
+                
+                String name = parts[1];
+                String subject = parts[4];
+                
+                JRadioButton rb = lecturerButtons[index];
+                
+                rb.setText(name + " - " + subject);
+                rb.setActionCommand(line);
+                rb.setVisible(true);
+                index++;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        
+        JRadioButton[] leaderButtons = {
+            jRadioButton10,
+            jRadioButton11,
+            jRadioButton12,
+            jRadioButton13,
+            jRadioButton14,
+            jRadioButton15,
+            jRadioButton16,
+            jRadioButton17,
+            jRadioButton18,
+        };
+        
+        for (JRadioButton rb : leaderButtons) {
+            rb.setVisible(false);
+            rb.setSelected(false);
+            rb.setActionCommand(null);
+        }
+        
+        File Leaderfile = new File("src/assignment1/DATA/Leader.txt");
+        if (!file.exists()) return;
+        
+        index = 0;
+        
+        try (BufferedReader br = new BufferedReader(new FileReader(Leaderfile))) {
+            String line;
+            while ((line = br.readLine()) != null && index < leaderButtons.length) {
+                String[] parts = line.split("\\|");
+                if (parts.length != 5) continue;
+                
+                String name = parts[1];
+                String subject = parts[4];
+                
+                JRadioButton rb = leaderButtons[index];
+                
+                rb.setText(name + " - " + subject);
+                rb.setActionCommand(line);
+                rb.setVisible(true);
+                index++;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }//GEN-LAST:event_jButton6ActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        AdminDashboard ad = new AdminDashboard();
+        ad.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_jButton1ActionPerformed
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
