@@ -1,2 +1,5 @@
 AcademicLeader|Dali|456123|33333333|OODJ
 AcademicLeader|Elli|123123|44444444|SNA
+AcademicLeader|Gali|456456|33333333|SDM
+AcademicLeader|Hali|234234|55555555|CTF
+AcademicLeader|ILLI|111222|44444444|FRS

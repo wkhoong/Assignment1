@@ -1,11 +1,12 @@
 package assignment1;
 
-import java.awt.List;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
-import java.nio.file.Files;
+import java.util.List;
 import java.util.ArrayList;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import javax.swing.ButtonModel;
 import javax.swing.JOptionPane;
 import javax.swing.JRadioButton;
@@ -427,7 +428,14 @@ public class AssignLeader extends javax.swing.JFrame {
         
         try {
             List<String> promotedLines = Files.readAllLines(file.toPath());
-            promotedLines
+            promotedLines.removeIf(line -> {
+                String[] parts = line.split("\\|");
+                return parts.length == 5 && parts[4].equals(lecSubject);
+            });
+            
+            Files.write(file.toPath(), promotedLines);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
         
         //refresh
@@ -449,12 +457,12 @@ public class AssignLeader extends javax.swing.JFrame {
             rb.setActionCommand(null);
         }
         
-        File file = new File("src/assignment1/DATA/Lecturer.txt");
+        File lecFile = new File("src/assignment1/DATA/Lecturer.txt");
         if (!file.exists()) return;
         
         int index = 0;
         
-        try (BufferedReader br = new BufferedReader(new FileReader(file))) {
+        try (BufferedReader br = new BufferedReader(new FileReader(lecFile))) {
             String line;
             
             while ((line = br.readLine()) != null && index < lecturerButtons.length) {
