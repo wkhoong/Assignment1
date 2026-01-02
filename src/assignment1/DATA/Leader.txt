@@ -3,3 +3,4 @@ AcademicLeader|Elli|123123|44444444|SNA
 AcademicLeader|Gali|456456|33333333|SDM
 AcademicLeader|Hali|234234|55555555|CTF
 AcademicLeader|ILLI|111222|44444444|FRS
+AcademicLeader|Jali|890890|66666666|INV

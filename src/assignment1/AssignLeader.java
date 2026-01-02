@@ -365,7 +365,161 @@ public class AssignLeader extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed
-        // TODO add your handling code here:
+        ButtonModel selected = buttonGroup2.getSelection();
+        if (selected == null) {
+            JOptionPane.showMessageDialog(this, "Please select a Academic Leader");
+            return;
+        }
+        
+        String leaderLine = selected.getActionCommand();
+        
+        String[] leaderParts = leaderLine.split("\\|");
+        if (leaderParts.length !=5) return;
+        
+        String leadName = leaderParts[1];
+        String id = leaderParts[2];
+        String password = leaderParts[3];
+        String leadSubject = leaderParts[4];
+        
+        String backLecturerLine = "lecturer|" + leadName + "|" + id + "|" + password + "|" + leadSubject;
+        
+        File lecturerFile = new File("src/assignment1/DATA/Lecturer.txt");
+        
+        ArrayList<String> lines = new ArrayList<>();
+        boolean replaced = false;
+        
+        try {
+            if (lecturerFile.exists()) {
+                lines = (ArrayList<String>) Files.readAllLines(lecturerFile.toPath());
+            }
+            
+            ArrayList<String> updated = new ArrayList<>();
+            
+            for (String line : lines) {
+                String[] p = line.split("\\|");
+                if (p.length == 5 && p[4].equals(leadSubject)) {
+                    updated.add(backLecturerLine);
+                    replaced = true;
+                } else {
+                    updated.add(line);
+                }
+            }
+            
+            if (!replaced) {
+                updated.add(backLecturerLine);
+            }
+            
+            Files.write(lecturerFile.toPath(), updated);
+            
+            JOptionPane.showMessageDialog(this, "Academic Leader back to lecturer for " + leadSubject);
+            
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        
+        //Remove de promoted leader
+        File file = new File("src/assignment1/DATA/Leader.txt");
+        if (!file.exists()) return;
+        
+        try {
+            List<String> promotedLines = Files.readAllLines(file.toPath());
+            promotedLines.removeIf(line -> {
+                String[] parts = line.split("\\|");
+                return parts.length == 5 && parts[4].equals(leadSubject);
+            });
+            
+            Files.write(file.toPath(), promotedLines);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        
+        //refresh
+        JRadioButton[] lecturerButtons = {
+            jRadioButton1,
+            jRadioButton2,
+            jRadioButton3,
+            jRadioButton4,
+            jRadioButton5,
+            jRadioButton6,
+            jRadioButton7,
+            jRadioButton8,
+            jRadioButton9
+        };
+        
+        for (JRadioButton rb : lecturerButtons) {
+            rb.setVisible(false);
+            rb.setSelected(false);
+            rb.setActionCommand(null);
+        }
+        
+        File lecFile = new File("src/assignment1/DATA/Lecturer.txt");
+        if (!file.exists()) return;
+        
+        int index = 0;
+        
+        try (BufferedReader br = new BufferedReader(new FileReader(lecFile))) {
+            String line;
+            
+            while ((line = br.readLine()) != null && index < lecturerButtons.length) {
+                String[] parts = line.split("\\|");
+                if (parts.length !=5) continue;
+                
+                String name = parts[1];
+                String subject = parts[4];
+                
+                JRadioButton rb = lecturerButtons[index];
+                
+                rb.setText(name + " - " + subject);
+                rb.setActionCommand(line);
+                rb.setVisible(true);
+                index++;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        
+        JRadioButton[] leaderButtons = {
+            jRadioButton10,
+            jRadioButton11,
+            jRadioButton12,
+            jRadioButton13,
+            jRadioButton14,
+            jRadioButton15,
+            jRadioButton16,
+            jRadioButton17,
+            jRadioButton18,
+        };
+        
+        for (JRadioButton rb : leaderButtons) {
+            rb.setVisible(false);
+            rb.setSelected(false);
+            rb.setActionCommand(null);
+        }
+        
+        File Leaderfile = new File("src/assignment1/DATA/Leader.txt");
+        if (!file.exists()) return;
+        
+        index = 0;
+        
+        try (BufferedReader br = new BufferedReader(new FileReader(Leaderfile))) {
+            String line;
+            while ((line = br.readLine()) != null && index < leaderButtons.length) {
+                String[] parts = line.split("\\|");
+                if (parts.length != 5) continue;
+                
+                String name = parts[1];
+                String subject = parts[4];
+                
+                JRadioButton rb = leaderButtons[index];
+                
+                rb.setText(name + " - " + subject);
+                rb.setActionCommand(line);
+                rb.setVisible(true);
+                index++;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }//GEN-LAST:event_jButton7ActionPerformed
 
     private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
