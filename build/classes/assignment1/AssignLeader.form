@@ -73,9 +73,7 @@
                           <Group type="102" alignment="0" attributes="0">
                               <EmptySpace min="-2" pref="11" max="-2" attributes="0"/>
                               <Component id="jButton6" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace max="32767" attributes="0"/>
-                              <Component id="jButton7" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace min="-2" pref="145" max="-2" attributes="0"/>
+                              <EmptySpace min="145" max="32767" attributes="0"/>
                           </Group>
                       </Group>
                   </Group>
@@ -86,23 +84,26 @@
               <Component id="jLabel3" min="-2" max="-2" attributes="0"/>
               <EmptySpace max="32767" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
+                  <Component id="jLabel4" min="-2" max="-2" attributes="0"/>
                   <Group type="102" attributes="0">
                       <EmptySpace min="6" pref="6" max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                          <Component id="jRadioButton18" max="32767" attributes="0"/>
-                          <Component id="jRadioButton17" max="32767" attributes="0"/>
-                          <Component id="jRadioButton16" max="32767" attributes="0"/>
-                          <Component id="jRadioButton15" max="32767" attributes="0"/>
-                          <Component id="jRadioButton14" max="32767" attributes="0"/>
-                          <Component id="jRadioButton13" max="32767" attributes="0"/>
-                          <Component id="jRadioButton12" max="32767" attributes="0"/>
-                          <Component id="jRadioButton11" max="32767" attributes="0"/>
-                          <Component id="jRadioButton10" alignment="0" min="-2" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                              <Component id="jRadioButton18" max="32767" attributes="0"/>
+                              <Component id="jRadioButton17" max="32767" attributes="0"/>
+                              <Component id="jRadioButton16" max="32767" attributes="0"/>
+                              <Component id="jRadioButton15" max="32767" attributes="0"/>
+                              <Component id="jRadioButton14" max="32767" attributes="0"/>
+                              <Component id="jRadioButton13" max="32767" attributes="0"/>
+                              <Component id="jRadioButton12" max="32767" attributes="0"/>
+                              <Component id="jRadioButton11" max="32767" attributes="0"/>
+                              <Component id="jRadioButton10" alignment="0" min="-2" max="-2" attributes="0"/>
+                          </Group>
+                          <Component id="jButton7" alignment="0" min="-2" max="-2" attributes="0"/>
                       </Group>
                   </Group>
-                  <Component id="jLabel4" min="-2" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace min="-2" pref="124" max="-2" attributes="0"/>
+              <EmptySpace min="-2" pref="120" max="-2" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -211,6 +212,9 @@
       <Properties>
         <Property name="text" type="java.lang.String" value="Grding System"/>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButton3ActionPerformed"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JButton" name="jButton4">
       <Properties>
@@ -221,6 +225,9 @@
       <Properties>
         <Property name="text" type="java.lang.String" value="Sign Out"/>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButton5ActionPerformed"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JLabel" name="jLabel2">
       <Properties>
@@ -376,7 +383,7 @@
     </Component>
     <Component class="javax.swing.JButton" name="jButton6">
       <Properties>
-        <Property name="text" type="java.lang.String" value="jButton6"/>
+        <Property name="text" type="java.lang.String" value="Promote"/>
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButton6ActionPerformed"/>
@@ -384,7 +391,7 @@
     </Component>
     <Component class="javax.swing.JButton" name="jButton7">
       <Properties>
-        <Property name="text" type="java.lang.String" value="jButton7"/>
+        <Property name="text" type="java.lang.String" value="Back to Lecturer"/>
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButton7ActionPerformed"/>

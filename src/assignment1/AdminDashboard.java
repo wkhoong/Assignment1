@@ -99,10 +99,12 @@ public class AdminDashboard extends javax.swing.JFrame {
         jButton2.addActionListener(this::jButton2ActionPerformed);
 
         jButton3.setText("Grding System");
+        jButton3.addActionListener(this::jButton3ActionPerformed);
 
         jButton4.setText("Class Management");
 
         jButton5.setText("Sign Out");
+        jButton5.addActionListener(this::jButton5ActionPerformed);
 
         jLabel2.setFont(new java.awt.Font("Copperplate Gothic Bold", 0, 18)); // NOI18N
         jLabel2.setText("User Management");
@@ -347,6 +349,18 @@ public class AdminDashboard extends javax.swing.JFrame {
         AL.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        GradingSys gs = new GradingSys();
+        gs.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_jButton3ActionPerformed
+
+    private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
+        Login login = new Login();
+        login.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_jButton5ActionPerformed
 
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(() -> new AdminDashboard().setVisible(true));
