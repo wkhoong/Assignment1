@@ -1,8 +1,18 @@
 package assignment1;
 
+import java.awt.Color;
+import java.awt.Component;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import javax.swing.JTable;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 
 public class GradingSys extends javax.swing.JFrame {
@@ -88,6 +98,11 @@ public class GradingSys extends javax.swing.JFrame {
                 "Min Score", "Max Score", "Grade", "GPA", "Description"
             }
         ));
+        jTable1.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                jTable1FocusGained(evt);
+            }
+        });
         jScrollPane1.setViewportView(jTable1);
 
         jButton6.setText("jButton6");
@@ -167,6 +182,123 @@ public class GradingSys extends javax.swing.JFrame {
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         jButton3.setEnabled(false);
     }//GEN-LAST:event_jButton3ActionPerformed
+
+    private void jTable1FocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jTable1FocusGained
+        System.out.println("focus gained");
+        
+        Set<Integer> invalidRows = new HashSet<>();
+        Set<Integer> invalidGradeRows = new HashSet<>();
+        Set<Integer> invalidGpaRows = new HashSet<>();
+        
+        invalidRows.clear();
+        invalidGradeRows.clear();
+        
+        DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
+        int rowCount = model.getRowCount();
+        
+        List<int[]> ranges = new ArrayList<>();
+        Map<String, Integer> gradeMap = new HashMap<>();
+                
+        for (int i = 0; i < rowCount; i++) {
+            try {
+                int min = Integer.parseInt(model.getValueAt(i, 0).toString());
+                int max = Integer.parseInt(model.getValueAt(i, 1).toString());
+                String grade = model.getValueAt(i, 2).toString().trim();
+                
+                if (min > max) {
+                    invalidRows.add(i);
+                }
+                
+                ranges.add(new int[]{min, max, i});
+                
+                if (gradeMap.containsKey(grade)) {
+                    invalidGradeRows.add(i);
+                    invalidGradeRows.add(gradeMap.get(grade));
+                }else {
+                    gradeMap.put(grade, i);
+                }
+                
+            } catch (Exception e) {
+                invalidRows.add(i);
+            }
+        }
+        
+        //Rule 2 - overlap range
+        for (int i = 0; i < ranges.size(); i++) {
+            for (int j = i + 1; j < ranges.size(); j++) {
+                int min1 = ranges.get(i)[0];
+                int max1 = ranges.get(i)[1];
+                int row1 = ranges.get(i)[2];
+                
+                int min2 = ranges.get(j)[0];
+                int max2 = ranges.get(j)[1];
+                int row2 = ranges.get(j)[2];
+                
+                boolean overlap = min1 <= max2 && min2 <= max1 || min1 == max1 || min2 == max2;
+                
+                if (overlap) {
+                    invalidRows.add(row1);
+                    invalidRows.add(row2);
+                }
+            }
+        }
+        
+        //Rule 3 - GPA
+        invalidGpaRows.clear();
+
+        ranges.sort((a, b) -> Integer.compare(b[0], a[0]));
+        
+        for (int i = 1; i < ranges.size() -1; i++) {
+            int upperRow = ranges.get(i - 1)[2];
+            int currentRow = ranges.get(i)[2];
+            int lowerRow = ranges.get(i + 1)[2];
+            
+            try {
+                double upperGpa = Double.parseDouble(model.getValueAt(upperRow, 3).toString());
+                double currentGpa = Double.parseDouble(model.getValueAt(currentRow, 3).toString());
+                double lowerGpa = Double.parseDouble(model.getValueAt(lowerRow, 3).toString());
+                
+                if (!(upperGpa > currentGpa && currentGpa > lowerGpa)) {
+                    invalidGpaRows.add(upperRow);
+                    invalidGpaRows.add(currentRow);
+                    invalidGpaRows.add(lowerRow);
+                }
+            } catch (Exception e) {
+                invalidGpaRows.add(upperRow);
+                invalidGpaRows.add(currentRow);
+                invalidGpaRows.add(lowerRow);
+            }
+        }
+        
+        //Red color invalid
+        jTable1.setDefaultRenderer(Object.class, new DefaultTableCellRenderer(){
+        
+            @Override
+            public Component getTableCellRendererComponent(
+                JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+                
+                Component c = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+                
+                c.setForeground(isSelected 
+                        ? table.getSelectionForeground()
+                        : table.getForeground());
+                
+                if (invalidRows.contains(row)) {
+                    c.setForeground(Color.red);
+                } 
+                
+                if (column == 2 && invalidGradeRows.contains(row)) {
+                    c.setForeground(Color.RED);
+                }
+                
+                if (column == 3 && invalidGpaRows.contains(row)) {
+                    c.setForeground(Color.RED);
+                }
+                return c;
+            }
+        });
+        
+    }//GEN-LAST:event_jTable1FocusGained
 
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
