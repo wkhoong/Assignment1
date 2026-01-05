@@ -22,6 +22,7 @@ public class GradingSys extends javax.swing.JFrame {
     public GradingSys() {
         initComponents();
         Utils.defaultSettings(this);
+        jButton3.setEnabled(false);
         
         DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
         model.setRowCount(0);
@@ -189,6 +190,7 @@ public class GradingSys extends javax.swing.JFrame {
         Set<Integer> invalidRows = new HashSet<>();
         Set<Integer> invalidGradeRows = new HashSet<>();
         Set<Integer> invalidGpaRows = new HashSet<>();
+        Set<Integer> invalidClassRows = new HashSet<>();
         
         invalidRows.clear();
         invalidGradeRows.clear();
@@ -198,6 +200,12 @@ public class GradingSys extends javax.swing.JFrame {
         
         List<int[]> ranges = new ArrayList<>();
         Map<String, Integer> gradeMap = new HashMap<>();
+        Map<String, Integer> classRank = Map.of(
+            "Distinction", 4, 
+            "Credit", 3,
+            "Pass", 2,
+            "Fail", 1
+        );
                 
         for (int i = 0; i < rowCount; i++) {
             try {
@@ -270,6 +278,36 @@ public class GradingSys extends javax.swing.JFrame {
             }
         }
         
+        //Rule 4 - classification
+        invalidClassRows.clear();
+        
+        for (int i = 0; i < ranges.size() - 1; i++) {
+            int upperRow = ranges.get(i)[2];
+            int lowerRow = ranges.get(i + 1)[2];
+            
+            try {
+                String upperClass = model.getValueAt(upperRow, 4).toString().trim();
+                String lowerClass = model.getValueAt(lowerRow, 4).toString().trim();
+                
+                Integer upperRank = classRank.get(upperClass);
+                Integer lowerRank = classRank.get(lowerClass);
+                
+                if (upperRank == null || lowerRank == null) {
+                    invalidClassRows.add(upperRow);
+                    invalidClassRows.add(lowerRow);
+                    continue;
+                }
+//                
+                if (upperRank < lowerRank) {
+                    invalidClassRows.add(upperRow);
+                    invalidClassRows.add(lowerRow);
+                }
+            } catch (Exception e) {
+                invalidClassRows.add(upperRow);
+                invalidClassRows.add(lowerRow);
+            }
+        }
+        
         //Red color invalid
         jTable1.setDefaultRenderer(Object.class, new DefaultTableCellRenderer(){
         
@@ -294,6 +332,11 @@ public class GradingSys extends javax.swing.JFrame {
                 if (column == 3 && invalidGpaRows.contains(row)) {
                     c.setForeground(Color.RED);
                 }
+                
+                if (column == 4 && invalidClassRows.contains(row)) {
+                    c.setForeground(Color.RED);
+                }
+                
                 return c;
             }
         });
