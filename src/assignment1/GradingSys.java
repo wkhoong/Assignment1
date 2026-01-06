@@ -3,14 +3,17 @@ package assignment1;
 import java.awt.Color;
 import java.awt.Component;
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
@@ -19,10 +22,16 @@ public class GradingSys extends javax.swing.JFrame {
     
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(GradingSys.class.getName());
 
+    Set<Integer> invalidRows = new HashSet<>();
+    Set<Integer> invalidGradeRows = new HashSet<>();
+    Set<Integer> invalidGpaRows = new HashSet<>();
+    Set<Integer> invalidClassRows = new HashSet<>();
+    
     public GradingSys() {
         initComponents();
         Utils.defaultSettings(this);
         jButton3.setEnabled(false);
+        jButton6.setEnabled(false);
         
         DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
         model.setRowCount(0);
@@ -104,9 +113,15 @@ public class GradingSys extends javax.swing.JFrame {
                 jTable1FocusGained(evt);
             }
         });
+        jTable1.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                jTable1KeyTyped(evt);
+            }
+        });
         jScrollPane1.setViewportView(jTable1);
 
         jButton6.setText("jButton6");
+        jButton6.addActionListener(this::jButton6ActionPerformed);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -187,10 +202,10 @@ public class GradingSys extends javax.swing.JFrame {
     private void jTable1FocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jTable1FocusGained
         System.out.println("focus gained");
         
-        Set<Integer> invalidRows = new HashSet<>();
-        Set<Integer> invalidGradeRows = new HashSet<>();
-        Set<Integer> invalidGpaRows = new HashSet<>();
-        Set<Integer> invalidClassRows = new HashSet<>();
+//        Set<Integer> invalidRows = new HashSet<>();
+//        Set<Integer> invalidGradeRows = new HashSet<>();
+//        Set<Integer> invalidGpaRows = new HashSet<>();
+//        Set<Integer> invalidClassRows = new HashSet<>();
         
         invalidRows.clear();
         invalidGradeRows.clear();
@@ -323,25 +338,224 @@ public class GradingSys extends javax.swing.JFrame {
                 
                 if (invalidRows.contains(row)) {
                     c.setForeground(Color.red);
+                    jButton6.setEnabled(false);
                 } 
                 
                 if (column == 2 && invalidGradeRows.contains(row)) {
                     c.setForeground(Color.RED);
+                    jButton6.setEnabled(false);
                 }
                 
                 if (column == 3 && invalidGpaRows.contains(row)) {
                     c.setForeground(Color.RED);
+                    jButton6.setEnabled(false);
                 }
                 
                 if (column == 4 && invalidClassRows.contains(row)) {
                     c.setForeground(Color.RED);
+                    jButton6.setEnabled(false);
                 }
                 
                 return c;
             }
         });
         
+//        if (invalidRows.isEmpty() || invalidGradeRows.isEmpty() || invalidGpaRows.isEmpty() || invalidClassRows.isEmpty()) {
+//           jButton6.setEnabled(true);
+//        } else {
+//            jButton6.setEnabled(false);
+//        }
     }//GEN-LAST:event_jTable1FocusGained
+
+    private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
+        File file = new File("src/assignment1/DATA/Grading.txt");
+        
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter(file, false))) {
+            DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
+            
+            for (int i = 0; i < model.getRowCount(); i++) {
+                String line = 
+                        model.getValueAt(i, 0) + "|" +
+                        model.getValueAt(i, 1) + "|" +
+                        model.getValueAt(i, 2) + "|" +
+                        model.getValueAt(i, 3) + "|" +
+                        model.getValueAt(i, 4);
+                
+                bw.write(line);
+                bw.newLine();
+            }
+            JOptionPane.showMessageDialog(this, "Grading system saved successfully.", "Saved", JOptionPane.INFORMATION_MESSAGE);
+        } catch (Exception e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(this, "Failed to save grading system.", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_jButton6ActionPerformed
+
+    private void jTable1KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTable1KeyTyped
+//        if (invalidRows.isEmpty() || invalidGradeRows.isEmpty() || invalidGpaRows.isEmpty() || invalidClassRows.isEmpty()) {
+//           jButton6.setEnabled(true);
+//        }
+        System.out.println("key typed");
+
+        invalidRows.clear();
+        invalidGradeRows.clear();
+        
+        DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
+        int rowCount = model.getRowCount();
+        
+        List<int[]> ranges = new ArrayList<>();
+        Map<String, Integer> gradeMap = new HashMap<>();
+        Map<String, Integer> classRank = Map.of(
+            "Distinction", 4, 
+            "Credit", 3,
+            "Pass", 2,
+            "Fail", 1
+        );
+                
+        for (int i = 0; i < rowCount; i++) {
+            try {
+                int min = Integer.parseInt(model.getValueAt(i, 0).toString());
+                int max = Integer.parseInt(model.getValueAt(i, 1).toString());
+                String grade = model.getValueAt(i, 2).toString().trim();
+                
+                if (min > max) {
+                    invalidRows.add(i);
+                }
+                
+                ranges.add(new int[]{min, max, i});
+                
+                if (gradeMap.containsKey(grade)) {
+                    invalidGradeRows.add(i);
+                    invalidGradeRows.add(gradeMap.get(grade));
+                }else {
+                    gradeMap.put(grade, i);
+                }
+                
+            } catch (Exception e) {
+                invalidRows.add(i);
+            }
+        }
+        
+        //Rule 2 - overlap range
+        for (int i = 0; i < ranges.size(); i++) {
+            for (int j = i + 1; j < ranges.size(); j++) {
+                int min1 = ranges.get(i)[0];
+                int max1 = ranges.get(i)[1];
+                int row1 = ranges.get(i)[2];
+                
+                int min2 = ranges.get(j)[0];
+                int max2 = ranges.get(j)[1];
+                int row2 = ranges.get(j)[2];
+                
+                boolean overlap = min1 <= max2 && min2 <= max1 || min1 == max1 || min2 == max2;
+                
+                if (overlap) {
+                    invalidRows.add(row1);
+                    invalidRows.add(row2);
+                }
+            }
+        }
+        
+        //Rule 3 - GPA
+        invalidGpaRows.clear();
+
+        ranges.sort((a, b) -> Integer.compare(b[0], a[0]));
+        
+        for (int i = 1; i < ranges.size() -1; i++) {
+            int upperRow = ranges.get(i - 1)[2];
+            int currentRow = ranges.get(i)[2];
+            int lowerRow = ranges.get(i + 1)[2];
+            
+            try {
+                double upperGpa = Double.parseDouble(model.getValueAt(upperRow, 3).toString());
+                double currentGpa = Double.parseDouble(model.getValueAt(currentRow, 3).toString());
+                double lowerGpa = Double.parseDouble(model.getValueAt(lowerRow, 3).toString());
+                
+                if (!(upperGpa > currentGpa && currentGpa > lowerGpa)) {
+                    invalidGpaRows.add(upperRow);
+                    invalidGpaRows.add(currentRow);
+                    invalidGpaRows.add(lowerRow);
+                }
+            } catch (Exception e) {
+                invalidGpaRows.add(upperRow);
+                invalidGpaRows.add(currentRow);
+                invalidGpaRows.add(lowerRow);
+            }
+        }
+        
+        //Rule 4 - classification
+        invalidClassRows.clear();
+        
+        for (int i = 0; i < ranges.size() - 1; i++) {
+            int upperRow = ranges.get(i)[2];
+            int lowerRow = ranges.get(i + 1)[2];
+            
+            try {
+                String upperClass = model.getValueAt(upperRow, 4).toString().trim();
+                String lowerClass = model.getValueAt(lowerRow, 4).toString().trim();
+                
+                Integer upperRank = classRank.get(upperClass);
+                Integer lowerRank = classRank.get(lowerClass);
+                
+                if (upperRank == null || lowerRank == null) {
+                    invalidClassRows.add(upperRow);
+                    invalidClassRows.add(lowerRow);
+                    continue;
+                }
+//                
+                if (upperRank < lowerRank) {
+                    invalidClassRows.add(upperRow);
+                    invalidClassRows.add(lowerRow);
+                }
+            } catch (Exception e) {
+                invalidClassRows.add(upperRow);
+                invalidClassRows.add(lowerRow);
+            }
+        }
+        
+        //Red color invalid
+        jTable1.setDefaultRenderer(Object.class, new DefaultTableCellRenderer(){
+        
+            @Override
+            public Component getTableCellRendererComponent(
+                JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+                
+                Component c = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+                
+                c.setForeground(isSelected 
+                        ? table.getSelectionForeground()
+                        : table.getForeground());
+                
+                if (invalidRows.contains(row)) {
+                    c.setForeground(Color.red);
+                    jButton6.setEnabled(false);
+                } 
+                
+                if (column == 2 && invalidGradeRows.contains(row)) {
+                    c.setForeground(Color.RED);
+                    jButton6.setEnabled(false);
+                }
+                
+                if (column == 3 && invalidGpaRows.contains(row)) {
+                    c.setForeground(Color.RED);
+                    jButton6.setEnabled(false);
+                }
+                
+                if (column == 4 && invalidClassRows.contains(row)) {
+                    c.setForeground(Color.RED);
+                    jButton6.setEnabled(false);
+                }
+                
+                return c;
+            }
+        });
+        
+        if (invalidRows.isEmpty() || invalidGradeRows.isEmpty() || invalidGpaRows.isEmpty() || invalidClassRows.isEmpty()) {
+           jButton6.setEnabled(true);
+        } else {
+           jButton6.setEnabled(false);
+        }
+    }//GEN-LAST:event_jTable1KeyTyped
 
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
