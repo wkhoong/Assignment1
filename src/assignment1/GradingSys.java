@@ -100,6 +100,7 @@ public class GradingSys extends javax.swing.JFrame {
         jButton3.addActionListener(this::jButton3ActionPerformed);
 
         jButton4.setText("Class Management");
+        jButton4.addActionListener(this::jButton4ActionPerformed);
 
         jButton5.setText("Sign Out");
         jButton5.addActionListener(this::jButton5ActionPerformed);
@@ -413,6 +414,12 @@ public class GradingSys extends javax.swing.JFrame {
     private void jTable1ComponentAdded(java.awt.event.ContainerEvent evt) {//GEN-FIRST:event_jTable1ComponentAdded
         System.out.println("Component Added");
     }//GEN-LAST:event_jTable1ComponentAdded
+
+    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+        CreateClass cc = new CreateClass();
+        cc.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_jButton4ActionPerformed
 
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
