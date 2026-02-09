@@ -1,6 +1,7 @@
 package assignment1;
 
 import java.io.*;
+import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
@@ -21,13 +22,15 @@ public class AdminDashboard extends javax.swing.JFrame {
         tables = new JTable[]{
             jTable1,
             jTable2,
-            jTable3
+            jTable3,
+            jTable4
         };
         
         String[] filePaths = {
             "src/assignment1/DATA/Student.txt",
             "src/assignment1/DATA/Lecturer.txt",
-            "src/assignment1/DATA/Admin.txt"
+            "src/assignment1/DATA/Admin.txt",
+            "src/assignment1/DATA/Leader.txt"
         };
         
         for (int i = 0; i<tables.length; i++) {
@@ -85,7 +88,12 @@ public class AdminDashboard extends javax.swing.JFrame {
         jPanel3 = new javax.swing.JPanel();
         jScrollPane3 = new javax.swing.JScrollPane();
         jTable3 = new javax.swing.JTable();
+        jPanel4 = new javax.swing.JPanel();
+        jScrollPane4 = new javax.swing.JScrollPane();
+        jTable4 = new javax.swing.JTable();
         jButton6 = new javax.swing.JButton();
+        jButton7 = new javax.swing.JButton();
+        jButton8 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setResizable(false);
@@ -208,8 +216,42 @@ public class AdminDashboard extends javax.swing.JFrame {
 
         jTabbedPane1.addTab("Admin", jPanel3);
 
+        jTable4.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null}
+            },
+            new String [] {
+                "Name", "ID", "Role", "Subject", "Password"
+            }
+        ));
+        jScrollPane4.setViewportView(jTable4);
+
+        javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
+        jPanel4.setLayout(jPanel4Layout);
+        jPanel4Layout.setHorizontalGroup(
+            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jScrollPane4, javax.swing.GroupLayout.DEFAULT_SIZE, 580, Short.MAX_VALUE)
+        );
+        jPanel4Layout.setVerticalGroup(
+            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel4Layout.createSequentialGroup()
+                .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 375, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
+        );
+
+        jTabbedPane1.addTab("Academic Leader", jPanel4);
+
         jButton6.setText("Save");
         jButton6.addActionListener(this::jButton6ActionPerformed);
+
+        jButton7.setText("Register");
+        jButton7.addActionListener(this::jButton7ActionPerformed);
+
+        jButton8.setText("jButton8");
+        jButton8.addActionListener(this::jButton8ActionPerformed);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -230,6 +272,10 @@ public class AdminDashboard extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel2)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jButton8)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jButton7)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jButton6))
                     .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(40, Short.MAX_VALUE))
@@ -241,7 +287,9 @@ public class AdminDashboard extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
                     .addComponent(jLabel2)
-                    .addComponent(jButton6))
+                    .addComponent(jButton6)
+                    .addComponent(jButton7)
+                    .addComponent(jButton8))
                 .addGap(31, 31, 31)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(layout.createSequentialGroup()
@@ -271,7 +319,8 @@ public class AdminDashboard extends javax.swing.JFrame {
         tables = new JTable[]{
             jTable1,
             jTable2,
-            jTable3
+            jTable3,
+            jTable4
         };
         
         if (index == 0) {
@@ -283,6 +332,9 @@ public class AdminDashboard extends javax.swing.JFrame {
         } else if (index == 2) {
             path = "src\\assignment1\\DATA\\Admin.txt";
             pathInd = 2;
+        } else if (index == 3) {
+            path = "src\\assignment1\\DATA\\Leader.txt";
+            pathInd = 3;
         }
         
         DefaultTableModel model = (DefaultTableModel) tables[pathInd].getModel();
@@ -302,7 +354,8 @@ public class AdminDashboard extends javax.swing.JFrame {
         tables = new JTable[]{
             jTable1,
             jTable2,
-            jTable3
+            jTable3,
+            jTable4
         };
         
         if (index == 0) {
@@ -314,6 +367,9 @@ public class AdminDashboard extends javax.swing.JFrame {
         } else if (index == 2) {
             path = "src\\assignment1\\DATA\\Admin.txt";
             pathInd = 2;
+        } else if (index == 3) {
+            path = "src\\assignment1\\DATA\\Leader.txt";
+            pathInd = 3;
         }
         
 //        System.out.println(path);
@@ -362,6 +418,59 @@ public class AdminDashboard extends javax.swing.JFrame {
         this.dispose();
     }//GEN-LAST:event_jButton5ActionPerformed
 
+    private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed
+        Register rg = new Register();
+        rg.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_jButton7ActionPerformed
+
+    private void jButton8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton8ActionPerformed
+        int index = jTabbedPane1.getSelectedIndex();
+        String path = "";
+        int pathInd = 0;
+        
+        System.out.println(index);
+        
+        tables = new JTable[]{
+            jTable1,
+            jTable2,
+            jTable3,
+            jTable4
+        };
+        
+        if (index == 0) {
+            path = "src\\assignment1\\DATA\\Lecturer.txt";
+            pathInd = 1;
+        } else if (index == 1) {
+            path = "src\\assignment1\\DATA\\Student.txt";
+            pathInd = 0;
+        } else if (index == 2) {
+            path = "src\\assignment1\\DATA\\Admin.txt";
+            pathInd = 2;
+        } else if (index == 3) {
+            path = "src\\assignment1\\DATA\\Leader.txt";
+            pathInd = 3;
+        }
+        
+        JTable table = tables[index];
+        int selectedRow = table.getSelectedRow();
+        
+        if (selectedRow == -1) {
+            JOptionPane.showMessageDialog(this, "Please select a row to delete.", "No Selection", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+        
+        int confirm = JOptionPane.showConfirmDialog(this, "Are you sure you want to delete the selected user?", "Confirm Delete", JOptionPane.YES_NO_OPTION);
+        
+        if (confirm != JOptionPane.YES_OPTION) return;
+        
+        DefaultTableModel model = (DefaultTableModel) tables[pathInd].getModel();
+        model.removeRow(selectedRow);
+        
+        //Rewrite the file
+        
+    }//GEN-LAST:event_jButton8ActionPerformed
+
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(() -> new AdminDashboard().setVisible(true));
     }
@@ -373,17 +482,22 @@ public class AdminDashboard extends javax.swing.JFrame {
     private javax.swing.JButton jButton4;
     private javax.swing.JButton jButton5;
     private javax.swing.JButton jButton6;
+    private javax.swing.JButton jButton7;
+    private javax.swing.JButton jButton8;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
+    private javax.swing.JPanel jPanel4;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
+    private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JTable jTable1;
     private javax.swing.JTable jTable2;
     private javax.swing.JTable jTable3;
+    private javax.swing.JTable jTable4;
     // End of variables declaration//GEN-END:variables
 }

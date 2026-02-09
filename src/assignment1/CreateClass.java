@@ -103,10 +103,10 @@ public class CreateClass extends javax.swing.JFrame {
         jLabel2.setFont(new java.awt.Font("Copperplate Gothic Bold", 0, 18)); // NOI18N
         jLabel2.setText("Create Class");
 
-        jButton6.setText("jButton6");
+        jButton6.setText("Save");
         jButton6.addActionListener(this::jButton6ActionPerformed);
 
-        jButton7.setText("jButton7");
+        jButton7.setText("Delete");
         jButton7.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseReleased(java.awt.event.MouseEvent evt) {
                 jButton7MouseReleased(evt);

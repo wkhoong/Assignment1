@@ -136,7 +136,7 @@ public class GradingSys extends javax.swing.JFrame {
         });
         jScrollPane1.setViewportView(jTable1);
 
-        jButton6.setText("jButton6");
+        jButton6.setText("Save");
         jButton6.addActionListener(this::jButton6ActionPerformed);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
