@@ -1,3 +1,2 @@
-CL01
-CL02
-CL03
+CL01|Cybersecurity
+CL02|Digital Forensic

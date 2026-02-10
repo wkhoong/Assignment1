@@ -18,7 +18,7 @@ public class CreateClass extends javax.swing.JFrame {
         jButton7.setEnabled(false);
         
         DefaultTableModel model = 
-                new DefaultTableModel(new Object[]{"Class ID"}, 0) {
+                new DefaultTableModel(new Object[]{"Class ID", "Class Name"}, 0) {
                     @Override
                     public boolean isCellEditable(int row, int col) {
                         return false;
@@ -36,7 +36,10 @@ public class CreateClass extends javax.swing.JFrame {
             String line;
             while ((line = br.readLine()) != null) {
                 String[] parts = line.split("\\|");
-                model.addRow(new Object[]{parts[0]});
+                model.addRow(new Object[]{
+                    parts[0],
+                    parts[1]
+                });
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -103,7 +106,7 @@ public class CreateClass extends javax.swing.JFrame {
         jLabel2.setFont(new java.awt.Font("Copperplate Gothic Bold", 0, 18)); // NOI18N
         jLabel2.setText("Create Class");
 
-        jButton6.setText("Save");
+        jButton6.setText("Add");
         jButton6.addActionListener(this::jButton6ActionPerformed);
 
         jButton7.setText("Delete");
@@ -193,6 +196,28 @@ public class CreateClass extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton5ActionPerformed
 
     private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
+        String[] classOptions = {
+            "Cybersecurity",
+            "Software Engineering",
+            "Data Science",
+            "Information Technology", 
+            "Digital Forensic",
+            "Information System Security",
+            "Cloud Engineering",
+            "Internet of Things",
+            "Financial Technology",
+            "Business Information Systems",
+            "Sustainable Computing",
+            "Data Analytics",
+            "Artificial Intelligence",
+            "Interactive Media & Immersive Technology",
+            "Games Development"
+        };
+        
+        String className = (String) JOptionPane.showInputDialog(null, "Select Class Name", "Create Class", JOptionPane.PLAIN_MESSAGE, null, classOptions, classOptions[0]);
+        
+        if (className == null) return;
+        
         DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
         int max = 0;
         
@@ -203,12 +228,12 @@ public class CreateClass extends javax.swing.JFrame {
         }
         String newId = String.format("CL%02d", max + 1);
         
-        model.addRow(new Object[]{newId});
+        model.addRow(new Object[]{newId, className});
         
         File file = new File("src/assignment1/DATA/classes.txt");
         
         try (BufferedWriter bw = new BufferedWriter(new FileWriter(file, true))) {
-            bw.write(newId);
+            bw.write(newId + "|" + className);
             bw.newLine();
         } catch (Exception e) {
             e.printStackTrace();
