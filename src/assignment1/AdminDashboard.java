@@ -110,6 +110,7 @@ public class AdminDashboard extends javax.swing.JFrame {
         jButton3.addActionListener(this::jButton3ActionPerformed);
 
         jButton4.setText("Class Management");
+        jButton4.addActionListener(this::jButton4ActionPerformed);
 
         jButton5.setText("Sign Out");
         jButton5.addActionListener(this::jButton5ActionPerformed);
@@ -250,7 +251,7 @@ public class AdminDashboard extends javax.swing.JFrame {
         jButton7.setText("Register");
         jButton7.addActionListener(this::jButton7ActionPerformed);
 
-        jButton8.setText("jButton8");
+        jButton8.setText("Delete");
         jButton8.addActionListener(this::jButton8ActionPerformed);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -468,8 +469,30 @@ public class AdminDashboard extends javax.swing.JFrame {
         model.removeRow(selectedRow);
         
         //Rewrite the file
-        
+        File file = new File(path);
+        try (PrintWriter pw = new PrintWriter(new FileWriter(file, false))) {
+
+            for (int i = 0; i < model.getRowCount(); i++) {
+
+                String name = model.getValueAt(i, 0).toString();
+                String id = model.getValueAt(i, 1).toString();
+                String role = model.getValueAt(i, 2).toString();
+                String dept   = model.getValueAt(i, 3).toString();
+                String password = model.getValueAt(i, 4).toString();
+
+                pw.println(role + "|" + name + "|" + id + "|" + password + "|" + dept);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }//GEN-LAST:event_jButton8ActionPerformed
+
+    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+        CreateClass cc = new CreateClass();
+        cc.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_jButton4ActionPerformed
 
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(() -> new AdminDashboard().setVisible(true));
